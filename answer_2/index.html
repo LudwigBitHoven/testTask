@@ -95,7 +95,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+                <h2 id="2">2. Задача<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>Дополнить базу именами партнёров из файла <strong>partners.xlsx</strong></p>
+<h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>В папке partners лежит несколько xlsx файлов, поэтому зальем их все, объединив их в один датафрейм.<br />
 Для объединения xlsx реализована функция create_merged_df, получающая на вход список путей по которому расположены xslx-ки. Функция считывает файлы, добавляет созданыне на основе файлов датафреймы в список и конкатанирует список в конце выполнения цикла:</p>
 <pre><code class="language-Python">def create_merged_df(paths: List[str]):

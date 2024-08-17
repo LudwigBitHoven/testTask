@@ -58,12 +58,6 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Цена по кварталу</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#sql_python">Часть с SQL / Python</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#python">Часть с Python</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">Дизайн таблицы</a>
-    </li>
     </ul>
                   </li>
               </ul>
@@ -101,7 +95,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+                <h2 id="3">3. Задача<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>найти среднюю цену по товару для каждого партнёра в разрезе складов за 1 кв 2020,2021 годов.<br />
+Ценой конкретного товара будет являться первая непустая цена из полей таблицы.
+<u>вывести в таблицу</u> Имя партнёра, Склад, Наименование товара, среднюю цену, среднюю сдельную цену, дату начала месяца, день, количество купленного товара накопительным итогом по месяцу</p>
+<h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h4 id="sql_python">Часть с SQL / Python<a class="headerlink" href="#sql_python" title="Permanent link">&para;</a></h4>
 <p>Таблица prices содержит nan значения, заданные через тип string. Превратим их в настоящие NULL:</p>
 <pre><code class="language-Python">cur.execute(&quot;&quot;&quot;UPDATE prices SET price_start = NULL WHERE price_start = &quot;nan&quot;;&quot;&quot;&quot;)

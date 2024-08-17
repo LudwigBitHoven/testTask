@@ -68,14 +68,6 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Заливка данных из директории</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_2">Скрипты и их назначение</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#create_tablepy">Код create_table.py</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#modify_xlsxpy">Код modify_xlsx.py</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#upload_datapy">Код upload_data.py</a>
-    </li>
     </ul>
                   </li>
               </ul>
@@ -103,7 +95,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+                <h2 id="5">5. Задача<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>средствами python переместить таблицы из папки <em>"заливка"</em> в базу. Так, чтобы при использовании исходных файлов и написанного скрипта можно было переносить данные из файлов в базу данных автоматически (эмитируем ежедневное обновление файлов excel).
+Дополнительные действия и манипуляции можно описать в комментарии самого скрипта.  </p>
+<h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h4 id="_2">Скрипты и их назначение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
 <p><strong>create_table.py</strong> - создает таблицу, в которую данные будут загружатся<br />
 <strong>modify_xlsx.py</strong> - редактирует файлы xlsx, чтобы их можно было загрузить в pandas без ошибок<br />
