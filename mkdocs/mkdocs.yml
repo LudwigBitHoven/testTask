@@ -1,0 +1,22 @@
+site_name: Тестовое задание
+nav:
+  - 'Задание 0':
+    - Подключение в бд: answer_0.md
+  - 'Задание 1':
+    - Оптимизация запроса: answer_1.md
+  - 'Задание 2':
+    - Создание таблицы partners: answer_2.md
+  - 'Задание 3':
+    - Цена по кварталу: answer_3.md
+  - 'Задание 4':
+    - Доля по проектам: answer_4.md
+  - 'Задание 5':
+    - Заливка данных из директории: answer_5.md
+theme:
+    name: readthedocs
+    hijs_languages:
+        - python
+markdown_extensions:
+    - toc:
+        permalink: True
+        separator: "_"
