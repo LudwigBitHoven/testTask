@@ -100,6 +100,7 @@
 <pre><code class="language-sql">select distinct partner_code,vid_nom, warehouse, sum(count) over (partition by partner_code,vid_nom) from guid g, prices p, revenue r
 where g.id_guid = p.id_guid and p.id_guid = r.id_guid;
 </code></pre>
+<h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>Первая проблема - это использование DISTINCT и OVER. Эти операции можно заменить простым GROUP BY в конце запроса</p>
 <pre><code class="language-sql">select partner_code,vid_nom, warehouse, sum(count) from guid g, prices p, revenue r
 where g.id_guid = p.id_guid and p.id_guid = r.id_guid
