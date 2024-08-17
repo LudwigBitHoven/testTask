@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Оптимизация запроса - Тестовое задание</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041e\u043f\u0442\u0438\u043c\u0438\u0437\u0430\u0446\u0438\u044f \u0437\u0430\u043f\u0440\u043e\u0441\u0430";
+        var mkdocs_page_input_path = "answer_1.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Тестовое задание
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Задание 0</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_0/">Подключение в бд</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 1</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Оптимизация запроса</a>
+    <ul class="current">
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_2/">Создание таблицы partners</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 3</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_3/">Цена по кварталу</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 4</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_4/">Доля по проектам</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 5</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_5/">Заливка данных из директории</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Тестовое задание</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Задание 1</li>
+      <li class="breadcrumb-item active">Оптимизация запроса</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="1">1. Задача<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>Дан запрос, который необходимо оптимизировать:</p>
+<pre><code class="language-sql">select distinct partner_code,vid_nom, warehouse, sum(count) over (partition by partner_code,vid_nom) from guid g, prices p, revenue r
+where g.id_guid = p.id_guid and p.id_guid = r.id_guid;
+</code></pre>
+<p>Первая проблема - это использование DISTINCT и OVER. Эти операции можно заменить простым GROUP BY в конце запроса</p>
+<pre><code class="language-sql">select partner_code,vid_nom, warehouse, sum(count) from guid g, prices p, revenue r
+where g.id_guid = p.id_guid and p.id_guid = r.id_guid
+GROUP BY partner_code, vid_nom, warehouse;
+</code></pre>
+<p>Вторая проблема - это имплицитный join, который ухудшает читаемость кода, заменим его на INNER JOIN</p>
+<pre><code class="language-sql">SELECT r.partner_code, g.vid_nom, r.warehouse, sum(r.count) FROM guid g
+INNER JOIN revenue r ON p.id_guid = r.id_guid
+INNER JOIN prices p ON g.id_guid = p.id_guid
+GROUP BY r.partner_code, g.vid_nom, r.warehouse;
+</code></pre>
+<p>Третья проблема - это join большой таблицы revenue к таблице guid со всеми её столбцами, поменяем местами "guid g" и "revenue r" в функциях join и from.
+Дадим столбцу с суммой по count более информативное название</p>
+<pre><code class="language-sql">SELECT r.partner_code, g.vid_nom, r.warehouse, sum(r.count) AS &quot;count sum&quot; FROM revenue r
+INNER JOIN guid g ON p.id_guid = r.id_guid
+INNER JOIN prices p ON g.id_guid = p.id_guid
+GROUP BY r.partner_code, g.vid_nom, r.warehouse;
+</code></pre>
+<p>Итого время выполнения до оптимизации составляло 36.423 с, после 1.414 с.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../answer_0/" class="btn btn-neutral float-left" title="Подключение в бд"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../answer_2/" class="btn btn-neutral float-right" title="Создание таблицы partners">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../answer_0/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../answer_2/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

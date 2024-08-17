@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Цена по кварталу - Тестовое задание</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0426\u0435\u043d\u0430 \u043f\u043e \u043a\u0432\u0430\u0440\u0442\u0430\u043b\u0443";
+        var mkdocs_page_input_path = "answer_3.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Тестовое задание
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Задание 0</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_0/">Подключение в бд</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 1</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_1/">Оптимизация запроса</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 2</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_2/">Создание таблицы partners</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 3</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Цена по кварталу</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sql_python">Часть с SQL / Python</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#python">Часть с Python</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Дизайн таблицы</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 4</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_4/">Доля по проектам</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Задание 5</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../answer_5/">Заливка данных из директории</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Тестовое задание</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Задание 3</li>
+      <li class="breadcrumb-item active">Цена по кварталу</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="_1">Описание решения<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h4 id="sql_python">Часть с SQL / Python<a class="headerlink" href="#sql_python" title="Permanent link">&para;</a></h4>
+<p>Таблица prices содержит nan значения, заданные через тип string. Превратим их в настоящие NULL:</p>
+<pre><code class="language-Python">cur.execute(&quot;&quot;&quot;UPDATE prices SET price_start = NULL WHERE price_start = &quot;nan&quot;;&quot;&quot;&quot;)
+cur.execute(&quot;&quot;&quot;UPDATE prices SET price_start2 = NULL WHERE price_start2 = &quot;nan&quot;;&quot;&quot;&quot;)
+cur.execute(&quot;&quot;&quot;UPDATE prices SET price_test = NULL WHERE price_test = &quot;nan&quot;;&quot;&quot;&quot;)
+</code></pre>
+<p>Такой подход меняет данные в бд, но можно сделать аналогичную операцию, взяв дубликат таблицы;  </p>
+<p>Составим и выполним запрос для получения необходимых данных для дальнейшей агрегации:</p>
+<pre><code class="language-Python">query = ' \
+    SELECT \
+        partner.partner, \
+        r.warehouse, \
+        g.name_nom,\
+        COALESCE(prices.price_start, prices.price_start2, prices.price_test) as &quot;product_price&quot;, \
+        r.price_deal, \
+        r.date_sale, \
+        r.count \
+    FROM \
+        revenue r \
+    INNER JOIN \
+        guid g ON r.id_guid = g.id_guid \
+    INNER JOIN \
+        prices ON g.id_guid = prices.id_guid \
+    INNER JOIN \
+        partners partner ON r.partner_code = partner.partner_code \
+    WHERE  \
+        (r.date_sale BETWEEN &quot;2020-01-01 00:00:00&quot; AND &quot;2020-04-01 00:00:00&quot;) OR \
+        (r.date_sale BETWEEN &quot;2021-01-01 00:00:00&quot; AND &quot;2021-04-01 00:00:00&quot;);'
+
+# obtaining dataframe by query
+df = pd.read_sql_query(query, connection)
+</code></pre>
+<p>Выбор COALESCE оправдан большей читаемостью по сравнению с IFNULL  </p>
+<h4 id="python">Часть с Python<a class="headerlink" href="#python" title="Permanent link">&para;</a></h4>
+<p>Конвертируем соответствующие строковые типы в int и datetime:</p>
+<pre><code class="language-Python">df[&quot;price_deal&quot;] = pd.to_numeric(df[&quot;price_deal&quot;])
+df[&quot;product_price&quot;] = pd.to_numeric(df[&quot;product_price&quot;])
+df[&quot;count&quot;] = pd.to_numeric(df[&quot;count&quot;])
+</code></pre>
+<p>Разделим год-месяц-день на год-месяц и день, поместим их в отдельные столбцы:</p>
+<pre><code class="language-Python">df[&quot;day&quot;] = df[&quot;date_sale&quot;].apply(lambda dt: dt.strftime('%d'))
+df[&quot;date_sale&quot;] = df[&quot;date_sale&quot;].apply(lambda dt: dt.strftime('%Y-%m'))
+</code></pre>
+<p>По условию необходимо получить среднюю сдельную цену и цену товара по складу, партнеру и наименованию товара за первый квартал 2021 и 2022. Как я понял средняя цена должна находится за весь квартал по вышеописанным группам. Составим соответствующую сводную таблицу:</p>
+<pre><code class="language-Python">df_1 = pd.pivot_table(
+    df, 
+    index=[&quot;partner&quot;, &quot;warehouse&quot;, &quot;name_nom&quot;],
+    values=[&quot;product_price&quot;, &quot;price_deal&quot;],
+    aggfunc=&quot;mean&quot;)
+</code></pre>
+<p>Как я понял по условию нам также необходимо найти количество реализованного товара по дням и сумму по реализованному товару за месяц. Составим сводную таблицу:</p>
+<pre><code class="language-Python">df_2 = pd.pivot_table(
+    df, 
+    index=[&quot;partner&quot;, &quot;warehouse&quot;, &quot;name_nom&quot;, &quot;date_sale&quot;],
+    columns=&quot;day&quot;,
+    values=[&quot;count&quot;],
+    aggfunc=&quot;sum&quot;,
+    margins=True,
+    fill_value=0)
+</code></pre>
+<p>Соединим две сводные таблицы через merge. Для этого удалим date_sale как индекс и установим его как столбец:</p>
+<pre><code class="language-Python">df_2.reset_index(level=['date_sale'], inplace=True)
+df = pd.merge(df_1, df_2.droplevel(0, axis=1), left_index=True, right_index=True)
+</code></pre>
+<h4 id="_2">Дизайн таблицы<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>Итоговая таблица получилась довольно широкой из-за столбцов под каждый из дней месяца. Это сделано потому, что pivot_table в новых версиях не позволяет без 'ломания' pandas и вреда для рантайма делать строковые подитоги для каждой группы. В качестве альтернативы можно перенести строки месяцев в столбцы, а столбцы дней в строки, но текущий дизайн мне нравится больше</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../answer_2/" class="btn btn-neutral float-left" title="Создание таблицы partners"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../answer_4/" class="btn btn-neutral float-right" title="Доля по проектам">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../answer_2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../answer_4/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
