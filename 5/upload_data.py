@@ -4,7 +4,7 @@ from os.path import join, isfile
 from sqlalchemy import create_engine
 
 
-SQLITE_PATH = "sqlite:///C:/Users/nickc/Desktop/Задания/test.db"
+SQLITE_PATH = "sqlite://../test.db"
 PATH = "../заливка"
 paths = [join(PATH, f) for f in listdir(PATH) if (isfile(join(PATH, f)) and ("_temp.xlsx" in f))]
 
